@@ -1,0 +1,5 @@
+libvmod-jemalloc (0.1) unstable; urgency=low
+
+  * First version
+
+ -- Reza Naghibi <reza@varnish-software.com>  Mon Mar 28 16:07:23 EDT 2016
