@@ -62,6 +62,18 @@ In your VCL you could then use this vmod along the following lines::
 
         import jemalloc;
 
+	sub vcl_recv {
+		if(req.url == "/jemalloc") {
+			return (synth(200, "JEMALLOC"));
+		}
+	}
+
+	sub vcl_synth {
+		set resp.http.Content-Type = "text/plain; charset=utf-8";
+		synthetic(jemalloc.get_stats());
+		return (deliver);
+	}
+
         sub vcl_deliver {
 		if (req.http.jemalloc) {
 			jemalloc.print_stats();
