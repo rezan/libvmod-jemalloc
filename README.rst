@@ -29,15 +29,15 @@ print_stats
 Prototype
         ::
 
-                print_stats()
+                print_stats(STRING options = "")
 Return value
 	VOID
 Description
-	prints jemalloc stats to varnishlog
+	Prints jemalloc stats to varnishlog. Supports optional jemalloc print options.
 Example
         ::
 
-                jemalloc.print_stats();
+                jemalloc.print_stats(STRING options = "");
 
 get_stats
 ---------
@@ -49,11 +49,12 @@ Prototype
 Return value
 	STRING
 Description
-	gets jemalloc stats as a STRING (not header safe, requires ~50k workspace)
+	Gets jemalloc stats as a STRING (not header safe, requires ~50k workspace). Supports
+	optional jemalloc print options.
 Example
         ::
 
-                synthetic(jemalloc.get_stats());
+                synthetic(jemalloc.get_stats(options = "a"));
 
 USAGE EXAMPLE
 =============
@@ -70,7 +71,7 @@ In your VCL you could then use this vmod along the following lines::
 
 	sub vcl_synth {
 		set resp.http.Content-Type = "text/plain; charset=utf-8";
-		synthetic(jemalloc.get_stats());
+		synthetic(jemalloc.get_stats(options = "a"));
 		return (deliver);
 	}
 

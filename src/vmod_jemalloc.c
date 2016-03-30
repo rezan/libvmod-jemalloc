@@ -30,15 +30,15 @@ vjemalloc_write_cb(void *vvsb, const char *msg)
 }
 
 VCL_VOID
-vmod_print_stats(VRT_CTX)
+vmod_print_stats(VRT_CTX, VCL_STRING options)
 {
 	CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
 	
-	malloc_stats_print(&vjemalloc_log_cb, (void*)ctx, NULL);
+	malloc_stats_print(&vjemalloc_log_cb, (void*)ctx, options);
 }
 
 VCL_STRING
-vmod_get_stats(VRT_CTX)
+vmod_get_stats(VRT_CTX, VCL_STRING options)
 {
 	struct vsb *v;
 	unsigned available;
@@ -51,7 +51,7 @@ vmod_get_stats(VRT_CTX)
 
 	CHECK_OBJ_NOTNULL(v, VSB_MAGIC);
 
-	malloc_stats_print(&vjemalloc_write_cb, (void*)v, NULL);
+	malloc_stats_print(&vjemalloc_write_cb, (void*)v, options);
 
 	VSB_finish(v);
 

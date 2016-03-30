@@ -14,7 +14,7 @@ varnish v1 -vcl+backend {
 
 	sub vcl_synth {
 		set resp.http.Content-Type = "text/plain; charset=utf-8";
-		synthetic(jemalloc.get_stats());
+		synthetic(jemalloc.get_stats(options = "a"));
 		return (deliver);
 	}
 } -start
