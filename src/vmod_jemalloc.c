@@ -60,7 +60,7 @@ vmod_get_stats(VRT_CTX)
 	    
 	    WS_Release(ctx->ws, 0);
 
-	    return "ERROR";
+	    return "ERROR (need more workspace)";
 	}
 
 	WS_Release(ctx->ws, VSB_len(v) + 1);

@@ -49,7 +49,7 @@ Prototype
 Return value
 	STRING
 Description
-	gets jemalloc stats as a STRING (not header safe, requires ~20k workspace)
+	gets jemalloc stats as a STRING (not header safe, requires ~50k workspace)
 Example
         ::
 
