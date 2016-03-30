@@ -41,10 +41,13 @@ VCL_STRING
 vmod_get_stats(VRT_CTX)
 {
 	struct vsb *v;
+	unsigned available;
 
 	CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
 
-	v = VSB_new(NULL, ctx->ws->f, WS_Reserve(ctx->ws, 0), VSB_AUTOEXTEND);
+	available = WS_Reserve(ctx->ws, 0);
+
+	v = VSB_new(NULL, ctx->ws->f, available, VSB_AUTOEXTEND);
 
 	CHECK_OBJ_NOTNULL(v, VSB_MAGIC);
 
@@ -52,7 +55,7 @@ vmod_get_stats(VRT_CTX)
 
 	VSB_finish(v);
 
-	if (VSB_error(v)) {
+	if (VSB_error(v) || VSB_len(v) + 1 > available) {
 	    VSLb(ctx->vsl, SLT_Error, "VSB error when writing jemalloc stats");
 	    
 	    WS_Release(ctx->ws, 0);
