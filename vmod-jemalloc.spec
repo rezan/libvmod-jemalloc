@@ -1,4 +1,4 @@
-Summary: Example VMOD for Varnish
+Summary: jemalloc VMOD for Varnish
 Name: vmod-jemalloc
 Version: 0.1
 Release: 1%{?dist}
@@ -13,7 +13,7 @@ BuildRequires: varnish >= 4.0.2
 BuildRequires: varnish-libs-devel >= 4.0.2
 
 %description
-Example VMOD
+jemalloc VMOD
 
 %prep
 %setup -n libvmod-jemalloc-trunk
@@ -39,5 +39,5 @@ mv %{buildroot}/usr/share/doc/lib%{name} %{buildroot}/usr/share/doc/%{name}
 %{_mandir}/man?/*
 
 %changelog
-* Tue Nov 14 2012 Lasse Karstensen <lasse@varnish-software.com> - 0.1-0.20121114
+* Mon Mar 28 2016 Reza Naghibi <reza@varnish-software.com> - 0.1
 - Initial version.
