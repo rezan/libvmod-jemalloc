@@ -1,36 +1,33 @@
-Summary: Example VMOD for Varnish
+Summary: jemalloc VMOD for Varnish
 Name: vmod-jemalloc
-Version: 0.1
+Version: 0.1-3.0
 Release: 1%{?dist}
 License: BSD
 Group: System Environment/Daemons
-Source0: libvmod-jemalloc.tar.gz
+Source0: libvmod-example.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: varnish >= 4.0.2
+Requires: varnish > 3.0
 BuildRequires: make
 BuildRequires: python-docutils
-BuildRequires: varnish >= 4.0.2
-BuildRequires: varnish-libs-devel >= 4.0.2
 
 %description
-Example VMOD
+jemalloc VMOD
 
 %prep
-%setup -n libvmod-jemalloc-trunk
+%setup -n libvmod-jemalloc
 
 %build
-%configure --prefix=/usr/
-%{__make} %{?_smp_mflags}
-%{__make} %{?_smp_mflags} check
+# this assumes that VARNISHSRC is defined on the rpmbuild command line, like this:
+# rpmbuild -bb --define 'VARNISHSRC /home/user/rpmbuild/BUILD/varnish-3.0.3' redhat/*spec
+./configure VARNISHSRC=%{VARNISHSRC} VMODDIR="$(PKG_CONFIG_PATH=%{VARNISHSRC} pkg-config --variable=vmoddir varnishapi)" --prefix=/usr/ --docdir='${datarootdir}/doc/%{name}'
+make
+make check
 
 %install
-[ %{buildroot} != "/" ] && %{__rm} -rf %{buildroot}
-%{__make} install DESTDIR=%{buildroot}
-mv %{buildroot}/usr/share/doc/lib%{name} %{buildroot}/usr/share/doc/%{name}
-
+make install DESTDIR=%{buildroot}
 
 %clean
-[ %{buildroot} != "/" ] && %{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
@@ -39,5 +36,5 @@ mv %{buildroot}/usr/share/doc/lib%{name} %{buildroot}/usr/share/doc/%{name}
 %{_mandir}/man?/*
 
 %changelog
-* Tue Nov 14 2012 Lasse Karstensen <lasse@varnish-software.com> - 0.1-0.20121114
+* Fri Apr 29 2016 Reza Naghibi <reza@varnish-software.com> - 0.1-3.0
 - Initial version.
