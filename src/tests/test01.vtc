@@ -9,12 +9,8 @@ varnish v1 -vcl+backend {
 	import jemalloc from "${vmod_topbuild}/src/.libs/libvmod_jemalloc.so";
 
 	sub vcl_deliver {
-		jemalloc.print_stats();
+		jemalloc.print_stats("");
 	}
-} -start
-
-logexpect l1 -v v1 -g raw {
-	expect * * VCL_Log "End jemalloc statistics"
 } -start
 
 client c1 {
@@ -24,5 +20,3 @@ client c1 {
 }
 
 client c1 -run
-
-logexpect l1 -wait
