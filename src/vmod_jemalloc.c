@@ -40,22 +40,22 @@ vmod_print_stats(VRT_CTX, VCL_STRING options)
 VCL_STRING
 vmod_get_stats(VRT_CTX, VCL_STRING options)
 {
-	struct vsb *v;
+	struct vsb v;
 	unsigned available;
 
 	CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
 
 	available = WS_Reserve(ctx->ws, 0);
 
-	v = VSB_new(NULL, ctx->ws->f, available, VSB_AUTOEXTEND);
+	VSB_new(&v, ctx->ws->f, available, VSB_AUTOEXTEND);
 
-	CHECK_OBJ_NOTNULL(v, VSB_MAGIC);
+	CHECK_OBJ(&v, VSB_MAGIC);
 
-	malloc_stats_print(&vjemalloc_write_cb, (void*)v, options);
+	malloc_stats_print(&vjemalloc_write_cb, (void*)&v, options);
 
-	VSB_finish(v);
+	VSB_finish(&v);
 
-	if (VSB_error(v) || VSB_len(v) + 1 > available) {
+	if (VSB_error(&v) || VSB_len(&v) + 1 > available) {
 	    VSLb(ctx->vsl, SLT_Error, "VSB error when writing jemalloc stats");
 	    
 	    WS_Release(ctx->ws, 0);
@@ -63,7 +63,7 @@ vmod_get_stats(VRT_CTX, VCL_STRING options)
 	    return "ERROR (need more workspace)";
 	}
 
-	WS_Release(ctx->ws, VSB_len(v) + 1);
+	WS_Release(ctx->ws, VSB_len(&v) + 1);
 
-	return (v->s_buf);
+	return (VSB_data(&v));
 }
