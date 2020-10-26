@@ -1,38 +1,28 @@
-AM_CPPFLAGS = @VMOD_INCLUDES@ -Wall -Werror
+AM_CFLAGS = $(VARNISHAPI_CFLAGS) -Wall -Werror
+AM_LDFLAGS = $(VARNISHAPI_LIBS) $(VMOD_LDFLAGS)
 
-vmoddir = @VMOD_DIR@
 vmod_LTLIBRARIES = libvmod_jemalloc.la
-
-libvmod_jemalloc_la_LDFLAGS = -module -export-dynamic -avoid-version -shared
 
 libvmod_jemalloc_la_SOURCES = \
 	vmod_jemalloc.c
 
 nodist_libvmod_jemalloc_la_SOURCES = \
-	vcc_if.c \
-	vcc_if.h
+	vcc_jemalloc_if.c \
+	vcc_jemalloc_if.h
 
-vmod_jemalloc.lo: vcc_if.c vcc_if.h
+dist_man_MANS = vmod_jemalloc.3
 
-vcc_if.c: vcc_if.h
+@BUILD_VMOD_JEMALLOC@
 
-vcc_if.h: @VMODTOOL@ $(top_srcdir)/src/vmod_jemalloc.vcc
-	@VMODTOOL@ $(top_srcdir)/src/vmod_jemalloc.vcc
+AM_TESTS_ENVIRONMENT = \
+	PATH="$(VMOD_TEST_PATH)" \
+	LD_LIBRARY_PATH="$(VARNISH_LIBRARY_PATH)"
+TEST_EXTENSIONS = .vtc
+VTC_LOG_COMPILER = varnishtest -v
+AM_VTC_LOG_FLAGS = -Dvmod_jemalloc="$(VMOD_JEMALLOC)"
 
-VMOD_TESTS = $(top_srcdir)/src/tests/*.vtc
-.PHONY: $(VMOD_TESTS)
-
-$(top_srcdir)/src/tests/*.vtc: libvmod_jemalloc.la
-	@VARNISHTEST@ -Dvarnishd=@VARNISHD@ -Dvmod_topbuild=$(abs_top_builddir) $@
-
-check: $(VMOD_TESTS)
+TESTS = @VMOD_TESTS@
 
 EXTRA_DIST = \
 	vmod_jemalloc.vcc \
 	$(VMOD_TESTS)
-
-CLEANFILES = \
-	$(builddir)/vcc_if.c \
-	$(builddir)/vcc_if.h \
-	$(builddir)/vmod_jemalloc.rst \
-	$(builddir)/vmod_jemalloc.man.rst

@@ -7,7 +7,7 @@ Varnish jemalloc VMOD
 ----------------------
 
 :Date: 2016-03-29
-:Version: 1.0
+:Version: 1.1
 :Manual section: 3
 
 SYNOPSIS

@@ -1,3 +1,7 @@
+#
+# Copyright Reza Naghibi (c) 2016-2020
+#
+
 $Module jemalloc 3 jemalloc stats VMOD
 
 DESCRIPTION
