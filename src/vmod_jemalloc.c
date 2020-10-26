@@ -45,7 +45,7 @@ vmod_get_stats(VRT_CTX, VCL_STRING options)
 
 	CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
 
-	available = WS_Reserve(ctx->ws, 0);
+	available = WS_ReserveAll(ctx->ws);
 
 	VSB_new(&v, ctx->ws->f, available, VSB_AUTOEXTEND);
 	CHECK_OBJ(&v, VSB_MAGIC);
