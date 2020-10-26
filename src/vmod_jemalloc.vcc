@@ -9,10 +9,10 @@ DESCRIPTION
 
 This VMOD prints internal jemalloc stats
 
-$Function VOID print_stats(STRING options = "")
+$Function VOID print_stats(STRING options = "a")
 
 Print jemalloc stats to varnishlog
 
-$Function STRING get_stats(STRING options = "")
+$Function STRING get_stats(STRING options = "a")
 
-Get jemalloc stats as a STRING, not header safe, requires ~50k of free workspace
+Get jemalloc stats as a STRING, not header safe.

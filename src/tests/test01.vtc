@@ -6,10 +6,10 @@ server s1 {
 } -start
 
 varnish v1 -vcl+backend {
-	import jemalloc from "${vmod_topbuild}/src/.libs/libvmod_jemalloc.so";
+	import ${vmod_jemalloc};
 
 	sub vcl_deliver {
-		jemalloc.print_stats();
+		jemalloc.print_stats(options = "");
 	}
 } -start
 

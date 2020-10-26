@@ -6,7 +6,7 @@ server s1 {
 } -start
 
 varnish v1 -vcl+backend {
-	import jemalloc from "${vmod_topbuild}/src/.libs/libvmod_jemalloc.so";
+	import ${vmod_jemalloc};
 
 	sub vcl_recv {
 		return (synth(200, "JEMALLOC"));
@@ -14,7 +14,7 @@ varnish v1 -vcl+backend {
 
 	sub vcl_synth {
 		set resp.http.Content-Type = "text/plain; charset=utf-8";
-		synthetic(jemalloc.get_stats(options = "a"));
+		synthetic(jemalloc.get_stats());
 		return (deliver);
 	}
 } -start

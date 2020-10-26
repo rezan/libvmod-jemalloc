@@ -29,15 +29,17 @@ print_stats
 Prototype
         ::
 
-                print_stats(STRING options = "")
+                print_stats(STRING options = "a")
 Return value
 	VOID
 Description
 	Prints jemalloc stats to varnishlog. Supports optional jemalloc print options.
+	Default option omits per arena stats ("a").
+
 Example
         ::
 
-                jemalloc.print_stats(STRING options = "");
+                jemalloc.print_stats();
 
 get_stats
 ---------
@@ -45,7 +47,7 @@ get_stats
 Prototype
         ::
 
-                get_stats()
+                get_stats(STRING options = "a")
 Return value
 	STRING
 Description
@@ -54,7 +56,7 @@ Description
 Example
         ::
 
-                synthetic(jemalloc.get_stats(options = "a"));
+                synthetic(jemalloc.get_stats(options = ""));
 
 USAGE EXAMPLE
 =============
@@ -71,7 +73,7 @@ In your VCL you could then use this vmod along the following lines::
 
 	sub vcl_synth {
 		set resp.http.Content-Type = "text/plain; charset=utf-8";
-		synthetic(jemalloc.get_stats(options = "a"));
+		synthetic(jemalloc.get_stats());
 		return (deliver);
 	}
 
