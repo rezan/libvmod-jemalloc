@@ -47,7 +47,7 @@ vmod_get_stats(VRT_CTX, VCL_STRING options)
 
 	available = WS_Reserve(ctx->ws, 0);
 
-	VSB_new(&v, ctx->ws->f, available, VSB_AUTOEXTEND);
+	VSB_new(&v, ctx->ws->f, available, VSB_FIXEDLEN);
 	CHECK_OBJ(&v, VSB_MAGIC);
 
 	malloc_stats_print(&vjemalloc_write_cb, (void*)&v, options);
